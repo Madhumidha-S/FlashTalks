@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { error } from "winston";
 
 export const authRequired = (req, res, next) => {
   const authHeader = req.headers.authorization;

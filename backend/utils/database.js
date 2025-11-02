@@ -1,5 +1,5 @@
-const { Pool } = require("pg");
-const config = require("../config");
+import { Pool } from "pg";
+import config from "../config.js";
 
 const pool = new Pool({
   host: config.database.host,
@@ -17,6 +17,4 @@ pool.query("SELECT NOW()", (err, res) => {
   }
 });
 
-module.exports = {
-  query: (text, params) => pool.query(text, params),
-};
+export default pool;
