@@ -1,4 +1,4 @@
-import { Home, TrendingUp, Heart, Save, User } from "lucide-react";
+import { Home, Heart, Save, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
@@ -6,7 +6,6 @@ export default function Sidebar() {
 
   const navItems = [
     { icon: Home, label: "Home", path: "/dashboard" },
-    { icon: TrendingUp, label: "Trending", path: "/trending" },
     { icon: Heart, label: "Liked videos", path: "/liked" },
     { icon: Save, label: "Saved videos", path: "/saved" },
     { icon: User, label: "Profile", path: "/profile" },

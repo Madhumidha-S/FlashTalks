@@ -19,7 +19,7 @@ export const getPlayUrl = async (req, res) => {
       Bucket: process.env.S3_BUCKET_NAME,
       Key: key,
     });
-    const playUrl = await getSignedUrl(s3, command, { expiresIn: 3600 }); 
+    const playUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
     res.json({ playUrl });
   } catch (error) {
     console.error("Error generating play URL:", error);
@@ -44,17 +44,19 @@ export const getUploadUrl = async (req, res) => {
 
 export const saveVideo = async (req, res) => {
   try {
-    const { title, description, videoUrl, tags = [] } = req.body;
+    const { title, description, videoUrl, thumbnailUrl, tags = [] } = req.body;
+
     const owner_id = 1;
+
     if (!title || !videoUrl) {
       return res.status(400).json({ error: "Missing required fields" });
     }
     const result = await pool.query(
       `INSERT INTO flashtalks
-        (title, blurb, video_url, owner_id, tags, status, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, $5, 'published', NOW(), NOW())
+        (title, blurb, video_url, thumbnail_url, owner_id, tags, status, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, 'published', NOW(), NOW())
        RETURNING *`,
-      [title, description, videoUrl, owner_id, tags]
+      [title, description, videoUrl, thumbnailUrl || null, owner_id, tags]
     );
     res.json({ success: true, flashtalk: result.rows[0] });
   } catch (err) {
