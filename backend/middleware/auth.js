@@ -1,16 +1,26 @@
 import jwt from "jsonwebtoken";
 
 export const authRequired = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: "Unauthorized" });
-
-  const token = authHeader.split(" ")[1];
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.body = decoded;
-    next();
+    if (req.isAuthenticated && req.isAuthenticated()) {
+      req.user = req.user || req.session.passport?.user;
+      console.log("Authenticated user:", req.user);
+      return next();
+    }
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      // const decoded = JSON.parse(
+      //   Buffer.from(token.split(".")[1], "base64").toString()
+      // );
+      const token = authHeader.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+      return next();
+    }
+    return res.status(401).json({ error: "Unauthorized" });
   } catch (err) {
-    res.status(403).json({ error: "Invalid Token" });
+    console.error("Error in authRequired:", err);
+    return res.status(401).json({ error: "Invalid or expired token" });
   }
 };
 

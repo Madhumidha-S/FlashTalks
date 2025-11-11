@@ -4,6 +4,7 @@ import flashtalkRoutes from "./flashtalkRoutes.js";
 import likeRoutes from "./likeRoutes.js";
 import saveRoutes from "./saveRoutes.js";
 import userRoutes from "./userRoutes.js";
+import uploadRoutes from "./uploadRoutes.js";
 
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.use("/flashtalks", flashtalkRoutes);
 router.use("/likes", likeRoutes);
 router.use("/saved", saveRoutes);
 router.use("/users", userRoutes);
+router.use("/upload", uploadRoutes);
 
 export default router;

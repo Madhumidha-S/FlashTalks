@@ -1,23 +1,44 @@
 import pool from "../utils/database.js";
 
 export const createTalk = async (req, res) => {
-  const { title, blurb, tags, duration_min } = req.body;
+  console.log("User in createTalk:", req.user);
+  const {
+    title,
+    blurb,
+    tags = [],
+    duration_min,
+    video_url,
+    thumbnail_url,
+  } = req.body;
   const owner_id = req.user.id;
+  if (!title || !video_url) {
+    return res.status(400).json({ error: "Title and video_url are required" });
+  }
 
   try {
     const result = await pool.query(
-      `INSERT INTO flashtalks (title, blurb, tags, duration_min, owner_id)
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [title, blurb, tags || [], duration_min, owner_id]
+      `INSERT INTO flashtalks
+       (title, blurb, tags, duration_min, owner_id, video_url, thumbnail_url, status, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'published', NOW(), NOW())
+       RETURNING *`,
+      [
+        title,
+        blurb,
+        tags,
+        duration_min,
+        owner_id,
+        video_url,
+        thumbnail_url || null,
+      ]
     );
-    res.json(result.rows[0]);
+    res.json({ success: true, flashtalk: result.rows[0] });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-export const getPublishedTalks = async (req, res) => {
-  const { q = "", page = 1, limit = 10 } = req.query;
+export const getPublishedTalks = async (req, res, next) => {
+  const { q = "", tags = "", page = 1, limit = 10 } = req.query;
   const userId = req.user?.id || null;
   const offset = (page - 1) * limit;
   try {
