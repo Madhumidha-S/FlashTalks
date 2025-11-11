@@ -44,9 +44,11 @@ export const getUploadUrl = async (req, res) => {
 
 export const saveVideo = async (req, res) => {
   try {
+    if (!req.user) return res.status(401).json({ error: "Unauthorized" });
     const { title, description, videoUrl, thumbnailUrl, tags = [] } = req.body;
 
-    const owner_id = 1;
+    // const owner_id = 1;
+    const owner_id = req.user.id;
 
     if (!title || !videoUrl) {
       return res.status(400).json({ error: "Missing required fields" });

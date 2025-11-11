@@ -13,7 +13,7 @@ type AuthContextType = {
   user: User | null;
   loading: boolean;
   loginWithGoogleToken: (tokenID: string) => Promise<void>;
-  logout: () => Promise<void>;
+  logout: () => void;
   requireAuthRedirect: () => void;
 };
 
@@ -24,49 +24,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const loadUser = async () => {
-    setLoading(true);
-    const token = localStorage.getItem("ft_token");
-    if (!token) {
-      setUser(null);
-      setLoading(false);
-      return;
-    }
-    try {
-      const res = await api.get("/users/me");
-      setUser(res.data);
-    } catch (err) {
-      console.warn("Invalid token or failed to fetch profile", err);
-      localStorage.removeItem("ft_token");
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  };
 
+  // ✅ Load user from token on first render
   useEffect(() => {
+    const loadUser = async () => {
+      const token = localStorage.getItem("ft_token");
+      if (!token) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const res = await api.get("/users/me");
+        setUser(res.data);
+      } catch (err) {
+        console.warn("Invalid or expired token:", err);
+        localStorage.removeItem("ft_token");
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
     loadUser();
   }, []);
 
+  // ✅ Handle Google login
   const loginWithGoogleToken = async (tokenID: string) => {
     const res = await api.post("/auth/google", { tokenID });
     const { token, user } = res.data;
-    if (token) {
-      localStorage.setItem("ft_token", token);
-      setUser(user);
-    } else {
-      throw new Error("No token received");
-    }
+
+    if (!token) throw new Error("No token received from backend");
+
+    // 🔐 Save token and set user
+    localStorage.setItem("ft_token", token);
+    setUser(user);
   };
 
-  const logout = async () => {
+  // ✅ Logout and redirect
+  const logout = () => {
     localStorage.removeItem("ft_token");
     setUser(null);
-    // await api.post('/auth/logout');
+    window.location.href = "/login";
   };
 
+  // ✅ Redirect helper
   const requireAuthRedirect = () => {
-    window.location.href = "/login";
+    if (!localStorage.getItem("ft_token")) {
+      window.location.href = "/login";
+    }
   };
 
   return (
@@ -79,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         requireAuthRedirect,
       }}
     >
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
