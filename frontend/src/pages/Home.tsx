@@ -56,17 +56,17 @@ export default function Home() {
             </p>
             <div className="flex items-center gap-4">
               <Link
-                to="/login"
+                to="/dashboard"
                 className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
               >
                 Get Started
               </Link>
-              <a
-                href="#about"
+              <Link
+                to="/login"
                 className="text-black hover:underline flex items-center gap-2 font-medium"
               >
-                Learn more →
-              </a>
+                Login →
+              </Link>
             </div>
           </div>
           <div className="relative">
@@ -79,15 +79,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About Section */}
       <section id="about" className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <h2 className="text-5xl font-bold text-center text-black mb-6">
             Everything you need
           </h2>
           <p className="text-center text-gray-700 max-w-2xl mx-auto mb-16 leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam.
+            Discover talks, learn faster, and connect with innovators.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-blue-50 rounded-2xl p-8 text-center">
@@ -95,8 +94,7 @@ export default function Home() {
                 <Play size={28} className="text-white fill-white" />
               </div>
               <p className="text-gray-700 leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua
+                Explore talks from across domains—technology, design, and more.
               </p>
             </div>
             <div className="bg-blue-50 rounded-2xl p-8 text-center">
@@ -104,8 +102,7 @@ export default function Home() {
                 <CheckCircle size={28} className="text-white" />
               </div>
               <p className="text-gray-700 leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua
+                Share your own ideas in bite-sized, impactful sessions.
               </p>
             </div>
             <div className="bg-blue-50 rounded-2xl p-8 text-center">
@@ -113,21 +110,19 @@ export default function Home() {
                 <TrendingUp size={28} className="text-white" />
               </div>
               <p className="text-gray-700 leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua
+                Learn from the community and see what’s trending.
               </p>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Contact Section */}
       <section id="contact" className="py-20 bg-blue-700 text-white">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-5xl font-bold mb-6">Contact us</h2>
           <p className="max-w-2xl mx-auto mb-10 leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam.
+            Have ideas or feedback? We’d love to hear from you.
           </p>
           <button className="bg-white text-blue-700 px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors font-medium">
             Contact us

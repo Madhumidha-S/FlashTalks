@@ -15,7 +15,7 @@ router.get("/published", getPublishedTalks);
 router.get("/mine", authRequired, getMyTalks);
 router.patch("/:id/status", authRequired, curatorOnly, updateTalkStatus);
 
-router.get("/:id", authRequired, async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const userId = req.user?.id || null;
 
