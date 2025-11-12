@@ -64,5 +64,5 @@ import { authRequired } from "../middleware/auth.js";
 const router = express.Router();
 router.get("/upload-url", getUploadUrl);
 router.get("/play-url", getPlayUrl);
-router.post("/save", saveVideo);
+router.post("/save", authRequired, saveVideo);
 export default router;
