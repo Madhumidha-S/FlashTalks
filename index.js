@@ -12,12 +12,15 @@ import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
+import { setupSwagger } from "./swagger.js";
+setupSwagger(app);
 
 // app.use(cors());
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3001";
 
 app.use(
   cors({
-    origin: ["http://localhost:3001", "http://127.0.0.1:3001"], // frontend
+    origin: [FRONTEND_URL], // frontend
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -32,7 +35,7 @@ app.use(
     secret: process.env.SESSION_SECRET || "keyboardcat",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }, 
+    cookie: { secure: false },
   })
 );
 app.use(passport.initialize());

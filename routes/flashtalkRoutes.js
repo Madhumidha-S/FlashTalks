@@ -1,3 +1,66 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Flashtalks
+ *   description: Video and content management
+ */
+
+/**
+ * @swagger
+ * /api/flashtalks/published:
+ *   get:
+ *     summary: Get all published FlashTalk videos
+ *     tags: [Flashtalks]
+ *     responses:
+ *       200:
+ *         description: List of published videos
+ */
+
+/**
+ * @swagger
+ * /api/flashtalks/mine:
+ *   get:
+ *     summary: Get all videos uploaded by current user
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Flashtalks]
+ *     responses:
+ *       200:
+ *         description: List of user's videos
+ *       401:
+ *         description: Unauthorized
+ */
+
+/**
+ * @swagger
+ * /api/flashtalks:
+ *   post:
+ *     summary: Upload a new FlashTalk video
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Flashtalks]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               blurb:
+ *                 type: string
+ *               video_url:
+ *                 type: string
+ *               thumbnail_url:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successfully uploaded
+ *       401:
+ *         description: Unauthorized
+ */
+
 import express from "express";
 import { curatorOnly, authRequired } from "../middleware/index.js";
 import {
