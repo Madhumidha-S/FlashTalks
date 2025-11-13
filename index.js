@@ -9,12 +9,13 @@ import errorHandler from "./middleware/errorHandler.js";
 import session from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
+import { setupSwagger } from "./swagger.js";
 
 dotenv.config();
 const app = express();
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3001";
 // app.use(cors());
-
+setupSwagger(app);
 app.use(
   cors({
     //origin: [FRONTEND_URL],
